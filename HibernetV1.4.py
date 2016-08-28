@@ -184,7 +184,6 @@ def begin():
 		exit(0)
 
 def loop():
-	print ("\nSending bombs to the target.") # non sapevo che scrivere lol
 	global threads
 	for x in range(threads): # con questa forumula diciamo ai threads di attaccare.
 		attack().start() # start() non fa altro che leggere nella classe threading.Thread cercando la funzione run(self), la quale
