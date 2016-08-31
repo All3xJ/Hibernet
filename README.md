@@ -1,6 +1,6 @@
 # Hibernet
 A powerful flooding tool.
-You can perform HTTP flood and SYN flood.. and you can choose if use proxy/socks to anonymize attack.
+You can perform HTTP flood, TCP flood and UDP flood.. and you can choose if use proxy/socks to anonymize attack.
 
 Please suggest me some ideas, and report bugs!
 Thanks!
