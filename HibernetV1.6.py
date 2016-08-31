@@ -414,4 +414,4 @@ class attack(threading.Thread): # la classe del multithreading
 			except:
 				pass
 
-checkurl() # questo fa startare la prima funzione del programma, che a sua volta ne starta un altra, poi un altra, fino ad arrivare all'attacco.
+checkurl() # questo fa startare la prima funzione del programma, che a sua volta ne starta un altra, poi un altra, fino ad arrivare all'attacco. 
