@@ -239,7 +239,6 @@ def inforgeget(): # anche questa funzione scarica proxy pero' da inforge.net
 		else:
 			pass
 		url = "https://www.inforge.net/xi/forums/liste-proxy.1118/"
-		print ("\nIGNORE THIS WARNING:")
 		soup = BeautifulSoup(urllib.request.urlopen(url)) # per strasformare in "zuppa" la source del sito
 		print ("\nDownloading from inforge.net in progress...")
 		base = "https://www.inforge.net/xi/"                       # questi comandi servono per trovare i link nella sezione
