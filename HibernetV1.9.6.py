@@ -227,7 +227,7 @@ def proxyget2():
 							out_file.write(x+"\n") # scrive ip uno per uno nel file proxy.txt
 							out_file.close()
 							break # appena finisce ferma il ciclo
-							print ("Proxies downloaded successfully.") # se li scarica correttamente, printa questa scritta
+		print ("Proxies downloaded successfully.") # se li scarica correttamente, printa questa scritta
 	except:
 		print ("\nERROR!\n") # printa qua
 	proxylist() # se tutto e' andato a buon fine, prosegue eseguendo proxylist()
@@ -257,7 +257,7 @@ def inforgeget(): # anche questa funzione scarica proxy pero' da inforge.net
 							out_file.write(x+"\n")
 							out_file.close()
 							break # il ciclo si ferma non appena ha finito
-							print ("Proxies downloaded successfully.") # se li scarica correttamente, printa questa scritta
+		print ("Proxies downloaded successfully.") # se li scarica correttamente, printa questa scritta
 	except: # se qualcosa va storto
 		print ("\nERROR!\n") # printa qua
 	proxylist() # se tutto e' andato a buon fine, prosegue eseguendo proxylist()
