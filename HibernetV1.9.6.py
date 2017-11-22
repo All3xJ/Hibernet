@@ -160,7 +160,7 @@ def choicemirror1():
 	elif choice5 == "1":
 		inforgeget()
 	elif choice5 == "2":
-		urlproxy = "http://skypegrab.net/proxy/http.txt"
+		urlproxy = "http://cyber-hub.net/proxy/http.txt"
 		proxyget2()
 	else:
 		print("You mistyped, try again.")
@@ -175,7 +175,7 @@ def choicemirror2():
 	elif choice5 == "1":
 		inforgeget()
 	elif choice5 == "2":
-		urlproxy = "http://skypegrab.net/proxy/socks.txt"
+		urlproxy = "http://cyber-hub.net/proxy/socks.txt"
 		proxyget2()
 	else:
 		print("You mistyped, try again.")
