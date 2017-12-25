@@ -18,7 +18,7 @@ If you are under winzoz, type:
 
 <h2>Usage</h2>
 Just type on a terminal:
-<pre>python3 HibernetV1.x</pre>
+<pre>python3 HibernetV2.x</pre>
 
 Or double click on the program in winzoz.
 
