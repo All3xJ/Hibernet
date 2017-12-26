@@ -27,4 +27,4 @@ Or double click on the program in winzoz.
 
 
 
-![alt text](https://imgur.com/a/xCYqG)
+<blockquote class="imgur-embed-pub" lang="en" data-id="a/xCYqG"><a href="//imgur.com/xCYqG"></a></blockquote><script async src="//s.imgur.com/min/embed.js" charset="utf-8"></script>
