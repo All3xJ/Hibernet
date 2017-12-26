@@ -28,5 +28,5 @@ Or double click on the program in winzoz.
 
 
 ![alt text](https://i.imgur.com/odr1rPd.png)
-![alt text](https://i.imgur.com/RwEWnC1.png)
-![alt text](https://i.imgur.com/M70mR7w.png)
+![alt text](https://i.imgur.com/3YNngR0.png)
+![alt text](https://i.imgur.com/BcvW4C3.png)
