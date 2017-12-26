@@ -27,4 +27,6 @@ Or double click on the program in winzoz.
 
 
 
-<blockquote class="imgur-embed-pub" lang="en" data-id="a/xCYqG"><a href="//imgur.com/xCYqG"></a></blockquote><script async src="//s.imgur.com/min/embed.js" charset="utf-8"></script>
+![alt text](https://i.imgur.com/odr1rPd.png)
+![alt text](https://i.imgur.com/RwEWnC1.png)
+![alt text](https://i.imgur.com/M70mR7w.png)
