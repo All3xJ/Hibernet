@@ -13,7 +13,7 @@ To install if you are running linux or mac, type:
 <pre>pip3 install pysocks bs4 scapy-python3</pre>
 
 If you are under winzoz, type:
-<pre>py -m pip install pysocks bs4 scapy-python3</pre>
+<pre>py -m pip install pysocks bs4</pre>
 
 
 <h2>Usage</h2>
