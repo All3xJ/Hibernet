@@ -32,4 +32,4 @@ Or double click on the program in winzoz.
 ![alt text](https://i.imgur.com/BcvW4C3.png)
 
 Attack from just 1 lousy vps:
-![alt text](https://i.imgur.com/Q0DDPq4.png)
+![alt text](http://i64.tinypic.com/10xf0v7.png)
