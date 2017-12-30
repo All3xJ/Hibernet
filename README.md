@@ -37,4 +37,4 @@ Attack from just 1 lousy vps:
 
 
 Demonstration video:
-[![Watch the video](https://itube.aimersoft.com/images/topic/youtube-not-start.jpg)(https://www.youtube.com/watch?v=G84R0qKMpO8)
+![Watch the video](https://www.youtube.com/watch?v=G84R0qKMpO8)
