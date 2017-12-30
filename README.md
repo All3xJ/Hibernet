@@ -36,5 +36,5 @@ Attack from just 1 lousy vps:
 
 
 
-Demonstration video:
-![Watch the video](https://www.youtube.com/watch?v=G84R0qKMpO8)
+<h2>Demonstration video:</h2>
+https://www.youtube.com/watch?v=G84R0qKMpO8
