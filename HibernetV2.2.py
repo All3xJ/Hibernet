@@ -662,7 +662,7 @@ def loop():
 		"Accept-Language: en-US,en;q=0.5\r\n",
 		"Accept: text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8\r\nAccept-Encoding: br;q=1.0, gzip;q=0.8, *;q=0.1\r\n",
 		"Accept: text/plain;q=0.8,image/png,*/*;q=0.5\r\nAccept-Charset: iso-8859-1\r\n",
-		]
+		] # header accept a caso per far sembrare le richieste più legittime
 		connection = "Connection: Keep-Alive\r\n" # la keep alive torna sempre utile lol
 	x = 0 # thanks therunixx, my friend
 	go = threading.Event()
