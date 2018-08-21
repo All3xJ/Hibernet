@@ -16,6 +16,10 @@ If you are under winzoz, type:
 <pre>py -m pip install pysocks bs4</pre>
 
 
+<h2>Proxy generator</h2>
+If you want more proxies for your attacks, you can use my script HiberProxy, it can downloads up to 28K proxies!
+
+You can found it here: https://github.com/All3xJ/HiberProxy
 <h2>Usage</h2>
 Just type on a terminal:
 <pre>python3 HibernetV2.x</pre>
