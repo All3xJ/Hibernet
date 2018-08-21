@@ -17,7 +17,7 @@ If you are under winzoz, type:
 
 
 <h2>Proxy generator</h2>
-If you want more proxies for your attacks, you can use my script HiberProxy, it can downloads up to 28K proxies!
+If you want more proxies for your attacks, you can use HiberProxy, it can downloads up to 28K proxies!
 
 You can found it here: https://github.com/All3xJ/HiberProxy
 <h2>Usage</h2>
