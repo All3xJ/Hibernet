@@ -35,8 +35,8 @@ Or double click on the program in winzoz.
 ![alt text](https://i.imgur.com/3YNngR0.png)
 ![alt text](https://i.imgur.com/BcvW4C3.png)
 
-Attack from just 1 lousy vps:
-![alt text](http://i64.tinypic.com/10xf0v7.png)
+
+Attack from just 1 lousy vps can be dangerous for a target, so don't aim targets that are not your property.
 
 
 
