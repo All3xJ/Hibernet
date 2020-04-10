@@ -1,6 +1,6 @@
 # Hibernet
-A powerful flooding tool.
-You can perform HTTP flood, TCP flood and UDP flood... and you can choose if use proxy/socks to anonymize attack.
+A powerful HTTP flooding tool.
+You can choose if use proxy/socks to anonymize attack.
 
 Please suggest me some ideas, and report bugs!
 Thanks!
@@ -10,19 +10,19 @@ Thanks!
 To use it you have to use python3 and you also need 3 extra modules.
 
 To install if you are running linux or mac, type:
-<pre>pip3 install pysocks bs4 scapy-python3</pre>
+<pre>pip3 install pysocks</pre>
 
 If you are under winzoz, type:
-<pre>py -m pip install pysocks bs4</pre>
+<pre>py -m pip install pysocks</pre>
 
 
 <h2>Proxy generator</h2>
-If you want more proxies for your attacks, you can use HiberProxy, it can downloads up to 30K proxies!
+If you want more proxies for your attacks, you can use HiberProxy or HiberSOCKS!
 
-You can found it here: https://github.com/All3xJ/HiberProxy
+You can found it here: https://github.com/All3xJ/HiberProxy and here: https://github.com/All3xJ/HiberSOCKS
 <h2>Usage</h2>
 Just type on a terminal:
-<pre>python3 HibernetV2.x</pre>
+<pre>python3 HibernetV3.x</pre>
 
 Or double click on the program in winzoz.
 
