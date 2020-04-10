@@ -27,6 +27,10 @@ Just type on a terminal:
 Or double click on the program in winzoz.
 
 
+<h2>New functionality for multi target attack.</h2>
+Just put your IPs or urls inside "ips.txt"
+
+
 <h1>ENJOY!</h1>
 
 
