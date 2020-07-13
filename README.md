@@ -7,9 +7,9 @@ Thanks!
 
 
 <h2>Install dependencies</h2>
-To use it you have to use python3 and you also need 3 extra modules.
+To use it you have to use python3 and you also need an extra module.
 
-To install if you are running linux or mac, type:
+To install it if you are running linux or mac, type:
 <pre>pip3 install pysocks</pre>
 
 If you are under winzoz, type:
