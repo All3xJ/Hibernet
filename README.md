@@ -15,11 +15,6 @@ To install it if you are running linux or mac, type:
 If you are under winzoz, type:
 <pre>py -m pip install pysocks</pre>
 
-
-<h2>Proxy generator</h2>
-If you want more proxies for your attacks, you can use HiberProxy or HiberSOCKS!
-
-You can found it here: https://github.com/All3xJ/HiberProxy and here: https://github.com/All3xJ/HiberSOCKS
 <h2>Usage</h2>
 Just type on a terminal:
 <pre>python3 HibernetV3.x</pre>
@@ -29,6 +24,11 @@ Or double click on the program in winzoz.
 
 <h2>New functionality for multi target attack.</h2>
 Just put your IPs or urls inside "ips.txt"
+
+<h2>Proxy generator</h2>
+If you want more proxies for your attacks, you can use HiberProxy or HiberSOCKS!
+
+You can found it here: https://github.com/All3xJ/HiberProxy and here: https://github.com/All3xJ/HiberSOCKS
 
 
 <h1>ENJOY!</h1>
